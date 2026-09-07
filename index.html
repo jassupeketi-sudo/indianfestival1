@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Indian Festivals Explorer</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:
+        radial-gradient(circle at top left, rgba(255,186,73,0.22), transparent 18%),
+        radial-gradient(circle at bottom right, rgba(56,189,248,0.18), transparent 20%),
+        linear-gradient(135deg,#0b1020,#111827 35%,#1f2937 100%);
+    color:#edf2f7;
+}
+
+/* HEADER */
+
+header{
+    background:
+        linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)),
+        linear-gradient(90deg,#ff8c42,#ff5b7e,#7c3aed,#1ea7a4);
+    color:white;
+    text-align:center;
+    padding:42px 20px;
+    border-bottom:1px solid rgba(255,255,255,0.2);
+    box-shadow:0 10px 30px rgba(0,0,0,0.25);
+}
+
+header h1{
+    font-size:40px;
+    margin-bottom:12px;
+    letter-spacing:1px;
+    text-shadow:0 4px 18px rgba(0,0,0,0.25);
+}
+
+header p{
+    font-size:18px;
+    color:#f3f4f6;
+}
+
+/* MAIN */
+
+.container{
+    width:92%;
+    max-width:1250px;
+    margin:35px auto;
+}
+
+.container > h2{
+    text-align:center;
+    color:#ffd166;
+    margin-bottom:25px;
+    font-size:30px;
+    text-shadow:0 5px 20px rgba(255,209,102,0.2);
+}
+
+/* FESTIVAL BUTTONS */
+
+.festival-list{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+    gap:18px;
+}
+
+.festival-btn{
+    border:1px solid rgba(255,255,255,0.12);
+    padding:20px;
+    border-radius:18px;
+    background:rgba(15,23,42,0.8);
+    color:#f8fafc;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 8px 20px rgba(0,0,0,0.2);
+    transition:0.3s ease;
+}
+
+.festival-btn:hover{
+    transform:translateY(-7px) scale(1.01);
+    background:linear-gradient(135deg,#ff8c42,#ff5b7e);
+    color:white;
+    box-shadow:0 14px 30px rgba(255,91,126,0.26);
+    border-color:rgba(255,255,255,0.2);
+}
+
+/* INFORMATION */
+
+#festivalInfo{
+    display:none;
+    margin-top:45px;
+    background:rgba(17,24,39,0.9);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:25px;
+    padding:30px;
+    box-shadow:0 16px 40px rgba(0,0,0,0.28);
+    animation:fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* IMAGE */
+
+.festival-image{
+    display:block;
+    width:100%;
+    max-width:700px;
+    height:360px;
+    object-fit:cover;
+    border-radius:20px;
+    margin:0 auto 25px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.35);
+    border:1px solid rgba(255,255,255,0.12);
+}
+
+#festivalName{
+    text-align:center;
+    font-size:34px;
+    color:#fbbf24;
+    margin-bottom:25px;
+    text-shadow:0 4px 16px rgba(251,191,36,0.18);
+}
+
+/* CARDS */
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+}
+
+.info-card{
+    background:rgba(15,23,42,0.8);
+    padding:22px;
+    border-radius:18px;
+    border-left:6px solid #f97316;
+    box-shadow:0 8px 20px rgba(0,0,0,0.2);
+}
+
+.info-card h3{
+    color:#f8fafc;
+    margin-bottom:12px;
+    font-size:20px;
+}
+
+.info-card p{
+    line-height:1.7;
+    color:#dbeafe;
+}
+
+/* RELIGIONS */
+
+.religions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.religion{
+    background:linear-gradient(135deg,#f59e0b,#f97316);
+    color:#fff;
+    padding:9px 15px;
+    border-radius:25px;
+    font-size:14px;
+    box-shadow:0 6px 18px rgba(249,115,22,0.24);
+}
+
+/* STATES */
+
+.states{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+.state{
+    background:rgba(59,130,246,0.16);
+    color:#dbeafe;
+    padding:8px 12px;
+    border-radius:15px;
+    font-size:14px;
+    border:1px solid rgba(147,197,253,0.18);
+}
+
+/* STATISTICS */
+
+.stat-box{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+    gap:12px;
+    margin-top:10px;
+}
+
+.stat{
+    background:rgba(15,23,42,0.8);
+    padding:15px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 3px 10px rgba(0,0,0,0.08);
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.stat strong{
+    display:block;
+    color:#7dd3fc;
+    font-size:22px;
+    margin-bottom:5px;
+}
+
+/* CLOSE */
+
+.close-btn{
+    display:block;
+    margin:30px auto 0;
+    padding:13px 30px;
+    border:none;
+    border-radius:30px;
+    background:linear-gradient(135deg,#f59e0b,#f97316);
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    box-shadow:0 10px 24px rgba(249,115,22,0.28);
+}
+
+.close-btn:hover{
+    background:linear-gradient(135deg,#ea580c,#dc2626);
+}
+
+/* FOOTER */
+
+footer{
+    margin-top:50px;
+    background:linear-gradient(180deg,#0f172a,#020817);
+    color:#e2e8f0;
+    text-align:center;
+    padding:25px;
+    line-height:2;
+    border-top:1px solid rgba(255,255,255,0.12);
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    header h1{
+        font-size:28px;
+    }
+
+    header p{
+        font-size:15px;
+    }
+
+    #festivalName{
+        font-size:25px;
+    }
+
+    .festival-image{
+        height:230px;
+    }
+
+    #festivalInfo{
+        padding:18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1> Indian's Festival Explorer</h1>
+    <p>Discover India's Festivals, Religions, States & Traditions</p>
+</header>
+
+<div class="container">
+
+<h2>🎉 Choose a Festival</h2>
+
+<div class="festival-list">
+
+<button class="festival-btn" onclick="showFestival('diwali')">
+🪔 Diwali
+</button>
+
+<button class="festival-btn" onclick="showFestival('holi')">
+🎨 Holi
+</button>
+
+<button class="festival-btn" onclick="showFestival('eid')">
+🌙 Eid
+</button>
+
+<button class="festival-btn" onclick="showFestival('christmas')">
+🎄 Christmas
+</button>
+
+<button class="festival-btn" onclick="showFestival('dussehra')">
+🏹 Dussehra
+</button>
+
+<button class="festival-btn" onclick="showFestival('ganesh')">
+🐘 Ganesh Chaturthi
+</button>
+
+<button class="festival-btn" onclick="showFestival('onam')">
+🌸 Onam
+</button>
+
+<button class="festival-btn" onclick="showFestival('pongal')">
+🌾 Pongal
+</button>
+
+<button class="festival-btn" onclick="showFestival('baisakhi')">
+🌾 Baisakhi
+</button>
+
+<button class="festival-btn" onclick="showFestival('buddha')">
+☸️ Buddha Purnima
+</button>
+
+<button class="festival-btn" onclick="showFestival('guru')">
+🪯 Guru Nanak Jayanti
+</button>
+
+<button class="festival-btn" onclick="showFestival('ugadi')">
+🌿 Ugadi
+</button>
+
+</div>
+
+
+<!-- INFORMATION SECTION -->
+
+<div id="festivalInfo">
+
+<img id="festivalImage" class="festival-image" src="" alt="Festival Image">
+
+<h2 id="festivalName"></h2>
+
+<div class="info-grid">
+
+<!-- RELIGION -->
+
+<div class="info-card">
+
+<h3>🙏 Religions / Communities</h3>
+
+<div class="religions" id="religions"></div>
+
+</div>
+
+
+<!-- STATES -->
+
+<div class="info-card">
+
+<h3>📍 Popular States / Regions</h3>
+
+<div class="states" id="states"></div>
+
+</div>
+
+
+<!-- DESCRIPTION -->
+
+<div class="info-card">
+
+<h3>📖 About the Festival</h3>
+
+<p id="description"></p>
+
+</div>
+
+
+<!-- TRADITIONS -->
+
+<div class="info-card">
+
+<h3>🎉 Major Traditions</h3>
+
+<p id="traditions"></p>
+
+</div>
+
+
+<!-- CELEBRATION STATS -->
+
+<div class="info-card">
+
+<h3>📊 Celebration Information</h3>
+
+<div class="stat-box">
+
+<div class="stat">
+<strong id="statesCount"></strong>
+States
+</div>
+
+<div class="stat">
+<strong id="days"></strong>
+Duration
+</div>
+
+<div class="stat">
+<strong id="type"></strong>
+Type
+</div>
+
+</div>
+
+</div>
+
+
+<!-- SPECIAL INFORMATION -->
+
+<div class="info-card">
+
+<h3>⭐ Special Feature</h3>
+
+<p id="special"></p>
+
+</div>
+
+</div>
+
+<button class="close-btn" onclick="closeInfo()">
+✖ Close
+</button>
+
+</div>
+
+</div>
+
+
+<footer>
+
+<p>🇮🇳 Celebrating India's Unity in Diversity 🇮🇳</p>
+
+<p>Indian Festivals Explorer © 2026</p>
+
+</footer>
+
+
+<script>
+
+const festivals = {
+
+diwali:{
+name:"🪔 Diwali – Festival of Lights",
+
+image:"diwali.jpeg",
+
+religions:["Hinduism","Jainism","Sikhism"],
+
+states:[
+"Uttar Pradesh",
+"Maharashtra",
+"Gujarat",
+"Rajasthan",
+"Karnataka",
+"Telangana",
+"Andhra Pradesh",
+"Delhi"
+],
+
+description:
+"Diwali is one of India's most widely celebrated festivals. It symbolizes the victory of light over darkness and good over evil.",
+
+traditions:
+"Lighting diyas, decorating homes, Lakshmi Puja, fireworks, exchanging sweets and gifts.",
+
+statesCount:"20+",
+days:"5 Days",
+type:"Religious",
+
+special:
+"Diwali is celebrated by different communities for different historical and religious reasons. It is one of India's most famous festivals worldwide."
+},
+
+
+holi:{
+name:"🎨 Holi – Festival of Colours",
+
+image:"holi.jpeg",
+
+religions:["Hinduism","Indian Cultural Communities"],
+
+states:[
+"Uttar Pradesh",
+"Rajasthan",
+"Gujarat",
+"Maharashtra",
+"Bihar",
+"West Bengal",
+"Madhya Pradesh"
+],
+
+description:
+"Holi is a colourful festival celebrating joy, friendship, spring and the victory of good over evil.",
+
+traditions:
+"Playing with colours, Holika Dahan, music, dancing, meeting friends and sharing sweets.",
+
+statesCount:"15+",
+days:"2 Days",
+type:"Cultural",
+
+special:
+"People of different backgrounds often participate in Holi celebrations, making it one of India's most colourful festivals."
+},
+
+
+eid:{
+name:"🌙 Eid – Islamic Festival",
+
+image:"eid1.jpg",
+
+description:
+"Eid is an important Islamic festival celebrated by Muslim communities across India.",
+
+traditions:
+"Eid prayers, charity, family gatherings, festive meals, wearing new clothes and exchanging greetings.",
+
+statesCount:"All India",
+days:"1–3 Days",
+type:"Religious",
+
+special:
+"Eid celebrations emphasize prayer, charity, family, community and sharing food with others."
+},
+
+
+christmas:{
+name:"🎄 Christmas",
+
+image:"christmas.jpg",
+
+religions:["Christianity"],
+
+states:[
+"Goa",
+"Kerala",
+"Tamil Nadu",
+"Nagaland",
+"Mizoram",
+"Meghalaya",
+"Manipur"
+],
+
+description:
+"Christmas celebrates the birth of Jesus Christ and is celebrated by Christian communities across India.",
+
+traditions:
+"Church services, Christmas trees, carols, decorations, cakes, family gatherings and exchanging gifts.",
+
+statesCount:"All India",
+days:"1 Day",
+type:"Religious",
+
+special:
+"Christmas is especially famous in Goa, Kerala and India's northeastern states."
+},
+
+
+dussehra:{
+name:"🏹 Dussehra – Victory of Good Over Evil",
+
+image:"vijayadashami.jpg",
+
+religions:["Hinduism"],
+
+states:[
+"Uttar Pradesh",
+"Delhi",
+"Karnataka",
+"West Bengal",
+"Himachal Pradesh",
+"Maharashtra",
+"Telangana"
+],
+
+description:
+"Dussehra celebrates the victory of good over evil and is associated with Lord Rama's victory over Ravana.",
+
+traditions:
+"Ramlila performances, burning Ravana effigies, prayers, processions and cultural programs.",
+
+statesCount:"20+",
+days:"1–10 Days",
+type:"Religious",
+
+special:
+"Different regions celebrate Dussehra in different ways, including Mysore Dasara and Ramlila."
+},
+
+
+ganesh:{
+name:"🐘 Ganesh Chaturthi",
+
+image:"ganesh.jpg",
+
+religions:["Hinduism"],
+
+states:[
+"Maharashtra",
+"Karnataka",
+"Telangana",
+"Andhra Pradesh",
+"Goa",
+"Odisha",
+"Gujarat"
+],
+
+description:
+"Ganesh Chaturthi celebrates Lord Ganesha, the Hindu deity associated with wisdom, prosperity and new beginnings.",
+
+traditions:
+"Installing Ganesha idols, prayers, cultural programs, processions and idol immersion.",
+
+statesCount:"10+",
+days:"10 Days",
+type:"Religious",
+
+special:
+"Mumbai and other cities in Maharashtra are famous for large public Ganesh celebrations."
+},
+
+
+onam:{
+name:"🌸 Onam – Kerala Harvest Festival",
+
+image:"onam3.jpg",
+
+religions:["Hinduism","Malayali Cultural Communities"],
+
+states:[
+"Kerala",
+"Tamil Nadu",
+"Karnataka",
+"Maharashtra"
+],
+
+description:
+"Onam is a major harvest and cultural festival of Kerala associated with the legendary King Mahabali.",
+
+traditions:
+"Pookalam, Onam Sadya, traditional dances, Vallam Kali boat races and cultural programs.",
+
+statesCount:"Mainly Kerala",
+days:"10 Days",
+type:"Harvest",
+
+special:
+"Onam is famous for colourful flower decorations, traditional food and boat races."
+},
+
+
+pongal:{
+name:"🌾 Pongal – Tamil Harvest Festival",
+
+image:"PONGAL.jpg",
+
+religions:["Hinduism","Tamil Cultural Communities"],
+
+states:[
+"Tamil Nadu",
+"Kerala",
+"Karnataka",
+"Andhra Pradesh",
+"Telangana"
+],
+
+description:
+"Pongal is a major harvest festival celebrating nature, farmers, cattle and the Sun.",
+
+traditions:
+"Cooking Pongal, Kolam decorations, cattle celebrations, traditional games and family gatherings.",
+
+statesCount:"Mainly Tamil Nadu",
+days:"4 Days",
+type:"Harvest",
+
+special:
+"The four main days are Bhogi, Thai Pongal, Mattu Pongal and Kaanum Pongal."
+},
+
+
+baisakhi:{
+name:"🌾 Baisakhi",
+
+image:"baisakhi1.jpg",
+
+religions:["Sikhism","Hinduism"],
+
+states:[
+"Punjab",
+"Haryana",
+"Delhi",
+"Uttar Pradesh",
+"Rajasthan"
+],
+
+description:
+"Baisakhi is an important harvest festival and has major significance in Sikh history.",
+
+traditions:
+"Gurdwara visits, prayers, processions, Bhangra, Gidda and community meals.",
+
+statesCount:"10+",
+days:"1 Day",
+type:"Harvest & Religious",
+
+special:
+"Baisakhi is especially important to Sikh history because the Khalsa was established on this day in 1699."
+},
+
+
+buddha:{
+name:"☸️ Buddha Purnima",
+
+image:"buddha2.jpg",
+
+religions:["Buddhism"],
+
+states:[
+"Bihar",
+"Uttar Pradesh",
+"Maharashtra",
+"Sikkim",
+"Ladakh",
+"West Bengal"
+],
+
+description:
+"Buddha Purnima commemorates important events associated with Gautama Buddha, including his birth and enlightenment.",
+
+traditions:
+"Meditation, prayers, visiting Buddhist temples, charity and learning Buddhist teachings.",
+
+statesCount:"10+",
+days:"1 Day",
+type:"Religious",
+
+special:
+"Bodh Gaya in Bihar is one of the most important Buddhist pilgrimage destinations."
+},
+
+
+guru:{
+name:"🪯 Guru Nanak Jayanti",
+
+image:"guru.jpg",
+
+religions:["Sikhism"],
+
+states:[
+"Punjab",
+"Haryana",
+"Delhi",
+"Rajasthan",
+"Uttar Pradesh",
+"Maharashtra"
+],
+
+description:
+"Guru Nanak Jayanti celebrates the birth anniversary of Guru Nanak, the founder and first Guru of Sikhism.",
+
+traditions:
+"Gurdwara prayers, Nagar Kirtan, devotional singing, reading scripture and Langar.",
+
+statesCount:"All India",
+days:"1 Day",
+type:"Religious",
+
+special:
+"Community kitchens called Langar provide free meals to people regardless of their background."
+},
+
+
+ugadi:{
+name:"🌿 Ugadi – Telugu & Kannada New Year",
+
+image:"ugadi.jpg",
+
+religions:["Hinduism","Telugu Cultural Communities","Kannada Cultural Communities"],
+
+states:[
+"Andhra Pradesh",
+"Telangana",
+"Karnataka",
+"Maharashtra"
+],
+
+description:
+"Ugadi marks the traditional New Year for Telugu and Kannada communities. It represents a fresh beginning and the arrival of a new year.",
+
+traditions:
+"Ugadi Pachadi, house decoration, mango leaves, traditional food, new clothes, prayers and Panchanga Sravanam.",
+
+statesCount:"4+",
+days:"1 Day",
+type:"New Year",
+
+special:
+"Ugadi Pachadi contains different tastes representing the different experiences of life such as happiness, sadness, surprise and challenges."
+}
+
+};
+
+
+/* SHOW FESTIVAL */
+
+function showFestival(festival){
+
+    const data = festivals[festival];
+
+    document.getElementById("festivalInfo").style.display="block";
+
+    document.getElementById("festivalName").innerHTML=data.name;
+
+    document.getElementById("festivalImage").src=data.image;
+
+    document.getElementById("description").innerHTML=data.description;
+
+    document.getElementById("traditions").innerHTML=data.traditions;
+
+    document.getElementById("statesCount").innerHTML=data.statesCount;
+
+    document.getElementById("days").innerHTML=data.days;
+
+    document.getElementById("type").innerHTML=data.type;
+
+    document.getElementById("special").innerHTML=data.special;
+
+
+    /* RELIGIONS */
+
+    const religionBox=document.getElementById("religions");
+
+    religionBox.innerHTML="";
+
+    data.religions.forEach(function(religion){
+
+        const span=document.createElement("span");
+
+        span.className="religion";
+
+        span.innerHTML=religion;
+
+        religionBox.appendChild(span);
+
+    });
+
+
+    /* STATES */
+
+    const stateBox=document.getElementById("states");
+
+    stateBox.innerHTML="";
+
+    data.states.forEach(function(state){
+
+        const span=document.createElement("span");
+
+        span.className="state";
+
+        span.innerHTML=state;
+
+        stateBox.appendChild(span);
+
+    });
+
+
+    /* SCROLL */
+
+    document.getElementById("festivalInfo").scrollIntoView({
+        behavior:"smooth"
+    });
+
+}
+
+
+/* CLOSE */
+
+function closeInfo(){
+
+    document.getElementById("festivalInfo").style.display="none";
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+</script>
+
+</body>
+</html>
